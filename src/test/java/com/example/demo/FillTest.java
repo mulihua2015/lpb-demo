@@ -33,7 +33,7 @@ public class FillTest {
         for (int i = 0; i <= map.size() / (5 * 32); i++) {
             byte[] bytes = PdfUtil.generatePdfStream(path, map, false);
             list.add(bytes);
-            PdfUtil.createFile(bytes, path1);
+          //  PdfUtil.createFile(bytes, path1);
         }
         OutputStream outputStream =
                 new FileOutputStream(DEST);

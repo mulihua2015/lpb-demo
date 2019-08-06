@@ -1,11 +1,15 @@
 package com.example.demo;
 
+import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.*;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public class PdfUtil {
@@ -16,11 +20,17 @@ public class PdfUtil {
     /**
      * 创建文件
      *
-     * @param bytes
+     * @param bytes    二进制流
+     * @param dir      目录名称
+     * @param fileName 文件名
      * @throws IOException
      */
-    public static void createFile(byte[] bytes, String descSrc) throws IOException {
-        File file = new File(descSrc);
+    public static void createFile(byte[] bytes, String dir, String fileName) throws IOException {
+        File directory = new File(dir);
+        if (!directory.isDirectory()) {
+            directory.mkdirs();
+        }
+        File file = new File(directory, fileName);
         OutputStream outputStream = new FileOutputStream(file);
         outputStream.write(bytes);
     }
@@ -121,6 +131,66 @@ public class PdfUtil {
         stamper.close();
         reader.close();
         return bos.toByteArray();
+    }
+
+    /**
+     * 合并PDF
+     * @param inputPdfList
+     * @param outputStream
+     * @throws Exception
+     */
+    static void mergePdfFiles2(List<byte[]> inputPdfList, OutputStream outputStream) throws Exception {
+
+        //Create document and pdfReader objects.
+        Document document = new Document();
+
+        //Create pdf Iterator object using inputPdfList.
+        Iterator<byte[]> pdfIterator = inputPdfList.iterator();
+
+        int totalPages = 0;
+        List<PdfReader> readers = new ArrayList<>();
+        // Create reader list for the input pdf files.
+        while (pdfIterator.hasNext()) {
+            byte[] pdf = pdfIterator.next();
+            PdfReader pdfReader = new PdfReader(pdf);
+            readers.add(pdfReader);
+            totalPages = totalPages + pdfReader.getNumberOfPages();
+        }
+
+        // Create writer for the outputStream
+        PdfWriter writer = PdfWriter.getInstance(document, outputStream);
+
+        //Open document.
+        document.open();
+
+        //Contain the pdf data.
+        PdfContentByte pageContentByte = writer.getDirectContent();
+
+        PdfImportedPage pdfImportedPage;
+        int currentPdfReaderPage = 1;
+        Iterator<PdfReader> iteratorPDFReader = readers.iterator();
+
+        // Iterate and process the reader list.
+        while (iteratorPDFReader.hasNext()) {
+            PdfReader pdfReader = iteratorPDFReader.next();
+            //Create page and add content.
+            while (currentPdfReaderPage <= pdfReader.getNumberOfPages()) {
+                document.setPageSize(pdfReader.getPageSize(currentPdfReaderPage));
+                document.newPage();
+                pdfImportedPage = writer.getImportedPage(
+                        pdfReader, currentPdfReaderPage);
+                pageContentByte.addTemplate(pdfImportedPage, 0, 0);
+                currentPdfReaderPage++;
+            }
+            currentPdfReaderPage = 1;
+        }
+
+        //Close document and outputStream.
+        outputStream.flush();
+        document.close();
+        outputStream.close();
+
+        System.out.println("Pdf files merged successfully.");
     }
 
     /**
