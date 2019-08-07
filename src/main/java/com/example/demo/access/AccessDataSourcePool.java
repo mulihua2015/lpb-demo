@@ -9,6 +9,7 @@ public class AccessDataSourcePool {
 
     GenericObjectPool pool  = null;
     PoolableObjectFactory factory = null;
+
     public AccessDataSourcePool(String accessFilePath){
         String className = "net.ucanaccess.jdbc.UcanaccessDriver"	;
         String driver = "jdbc:ucanaccess://E:\\idea_work_space\\demo\\resources\\分摊库.mdb";
@@ -25,6 +26,13 @@ public class AccessDataSourcePool {
         //连接等待1分钟
         pool.setMaxWait(60000);
     }
+
+
+    public void close() throws Exception{
+         pool.close();
+        //pool.clear();
+    }
+
 
     /** 获得连接*/
     public Connection getConnection() {

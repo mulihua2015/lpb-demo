@@ -104,45 +104,27 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<overlays>
+						<overlay>
+							<groupId>ff</groupId>
+							<artifactId>base</artifactId>
+						</overlay>
+					</overlays>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 
-	<pluginRepositories>
-		<pluginRepository>
-			<id>nexus</id>
-			<name>nexus</name>
-			<url>http://nexus.ipo.com/nexus/content/groups/public/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>3rd.nexus</id>
-			<name>thirdparty central mirror</name>
-			<url>http://nexus.ipo.com/nexus/content/repositories/thirdparty/</url>
-		</pluginRepository>
-	</pluginRepositories>
 
 	<repositories>
-		<repository>
-			<id>nexus</id>
-			<name>nexus</name>
-			<url>http://maven.ipo.com/nexus/content/groups/public/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>3rd.nexus</id>
-			<name>thirdparty central mirror</name>
-			<url>http://maven.ipo.com/nexus/content/repositories/thirdparty/</url>
-		</repository>
+
 		<repository>
 			<id>aliyunmaven</id>
 			<name>aliyun maven</name>
@@ -150,16 +132,6 @@
 		</repository>
 	</repositories>
 
-	<distributionManagement>
-		<repository>
-			<id>hf-releases</id>
-			<url>http://nexus.ipo.com/nexus/content/repositories/releases</url>
-		</repository>
-		<snapshotRepository>
-			<id>hf-snapshots</id>
-			<name>snapshots</name>
-			<url>http://nexus.ipo.com/nexus/content/repositories/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
+
 
 </project>

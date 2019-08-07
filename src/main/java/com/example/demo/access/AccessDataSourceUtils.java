@@ -14,10 +14,19 @@ public class AccessDataSourceUtils {
 
     static AccessDataSourcePool connPoll = null ;
 
+    private static Map <String,AccessDataSourcePool> map = new HashMap<>();
+
+
+
     public static void main(String[] args)  throws Exception{
 
         String tableName = "层表";
         List<Object> list = AccessDataExchange(tableName);
+        AccessDataSourcePool accessDataSourcePool = new AccessDataSourcePool("");
+        accessDataSourcePool.init();
+        map.put("1",new AccessDataSourcePool(""));
+        accessDataSourcePool.close();
+        accessDataSourcePool = map.get("1");
 
     }
     
@@ -143,8 +152,7 @@ public class AccessDataSourceUtils {
                 }
                 list.add(o);
                 list.forEach(x -> {
-                    Tire tire = (Tire) x;
-                    System.out.println(tire);
+                    System.out.println(x.getClass().getName());
                 });
             }
         } catch (SQLException e) {
@@ -158,6 +166,8 @@ public class AccessDataSourceUtils {
         } catch (IllegalArgumentException e) {
 
         }finally {
+
+
             connPoll.relaseConnection(conn);
             rs.close();
             stat.close();
