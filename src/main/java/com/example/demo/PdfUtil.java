@@ -139,7 +139,7 @@ public class PdfUtil {
      * @param outputStream
      * @throws Exception
      */
-    static void mergePdfFiles2(List<byte[]> inputPdfList, OutputStream outputStream) throws Exception {
+    static void mergePdfFiles(List<byte[]> inputPdfList, OutputStream outputStream) throws Exception {
 
         //Create document and pdfReader objects.
         Document document = new Document();

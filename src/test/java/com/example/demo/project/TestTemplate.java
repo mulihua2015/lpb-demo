@@ -2,6 +2,8 @@ package com.example.demo.project;
 
 import com.example.demo.DBQueryExecuter;
 import com.example.demo.PdfUtil;
+import com.example.demo.access.AccessDataSourceUtils;
+import com.example.demo.access.domain.RPPublicArea;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -41,12 +43,15 @@ public class TestTemplate {
 
     @Test
     public void testTemplate3() throws Exception {
-        List<Map<String, Object>> list = new DBQueryExecuter().queryTable("RP公用建筑面积分层汇总表")
+        List<RPPublicArea> objs = (List<RPPublicArea>)AccessDataSourceUtils.accessDataExchange("rp房屋建筑面积分户汇总表");
+
+        System.out.println(objs);
+/*        List<Map<String, Object>> list = new DBQueryExecuter().queryTable("RP公用建筑面积分层汇总表")
                 .getResultMapConvertChineseToFirstChar();
         Map<String, Object> map = list.get(0);
         byte[] bytes = PdfUtil.generatePdfStream(FILE_TEMPLATE2, convertMapValueToString(map));
         PdfUtil.createFile(bytes, FILE_OUTPUT_DIRECTORY, RESULT_PATH2);
-        System.out.println(convertMapValueToString(map));
+        System.out.println(convertMapValueToString(map));*/
     }
 
 
