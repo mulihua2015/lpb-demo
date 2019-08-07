@@ -34,14 +34,14 @@ public class AccessDomainConvertUtils {
             return null;
         }
         Map<String, String> map = new HashMap<>(objList.size() * 5);
-        for (T o : objList) {
-            Class<?> clazz = o.getClass();
+        for (int i = 0; i < objList.size(); i++) {
+            Class<?> clazz = objList.get(i).getClass();
             Field[] fields = clazz.getDeclaredFields();
-            for (int i = 0; i < fields.length; i++) {
-                Method method = getReadMethod(fields[i], clazz);
+            for (Field field : fields) {
+                Method method = getReadMethod(field, clazz);
                 if (method != null) {
-                    Object value = method.invoke(o);
-                    map.put(getKey(fields[i]) + DOT + i, value == null ? null : value.toString());
+                    Object value = method.invoke(objList.get(i));
+                    map.put(getKey(field) + DOT + i, value == null ? null : value.toString());
                 }
             }
         }
@@ -50,6 +50,10 @@ public class AccessDomainConvertUtils {
 
     /**
      * 转化为单个对象
+     * key的值:
+     * 1.若字段上设置了ConvertKey, 则取其value
+     * 2.否则取其字段名做为key
+     * value的值就是字段值.
      */
     public static <T> Map<String, String> convert(T t) throws NoSuchMethodException,
             InvocationTargetException, IllegalAccessException {
@@ -115,7 +119,10 @@ public class AccessDomainConvertUtils {
     public static void main(String[] args) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         List<RPPublicArea> list = new ArrayList();
         RPPublicArea area = new RPPublicArea();
+        area.setBj("123213123");
+        RPPublicArea area1 = new RPPublicArea();
         list.add(area);
+        list.add(area1);
         System.out.println(AccessDomainConvertUtils.convert(list));
         System.out.println(AccessDomainConvertUtils.convert(area));
     }
