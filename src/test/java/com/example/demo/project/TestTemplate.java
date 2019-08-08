@@ -43,9 +43,9 @@ public class TestTemplate {
 
     @Test
     public void testTemplate3() throws Exception {
-        List<RPPublicArea> objs = (List<RPPublicArea>)AccessDataSourceUtils.accessDataExchange("rp房屋建筑面积分户汇总表");
+       /* List<RPPublicArea> objs = (List<RPPublicArea>)AccessDataSourceUtils.accessDataExchange("rp房屋建筑面积分户汇总表");
 
-        System.out.println(objs);
+        System.out.println(objs);*/
 /*        List<Map<String, Object>> list = new DBQueryExecuter().queryTable("RP公用建筑面积分层汇总表")
                 .getResultMapConvertChineseToFirstChar();
         Map<String, Object> map = list.get(0);
