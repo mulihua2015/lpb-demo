@@ -12,7 +12,7 @@ public class AccessDataSourcePool {
 
     public AccessDataSourcePool(String accessFilePath){
         String className = "net.ucanaccess.jdbc.UcanaccessDriver"	;
-        String driver = "jdbc:ucanaccess://E:\\idea_work_space\\demo\\resources\\分摊库.mdb";
+        String driver = "jdbc:ucanaccess://D:\\idea_work_space\\lpb-demo\\resources\\分摊库.mdb";
         driver = driver + accessFilePath;
         factory = new DBConnectFactory(className,driver);
 
