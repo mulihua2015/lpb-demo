@@ -8,7 +8,7 @@ import java.util.List;
 public class ScanPackageUtils {
 
     public static void main(String[] args) throws Exception {
-        List<Class> aClass = findClass("com.example.demo.zip");
+        List<Class> aClass = findClass("com.example.demo");
 
         aClass.forEach(x -> {
             System.out.println(x.getName());

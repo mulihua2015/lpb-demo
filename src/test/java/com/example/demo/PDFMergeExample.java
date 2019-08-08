@@ -40,7 +40,7 @@ public class PDFMergeExample {
     public static final String PDF1 = "resources/pdfs/nanning_contract_record_prove_template.pdf";
     public static final String PDF2 = "resources/pdfs/pages.pdf";
     public static final String PDF3 = "resources/pdfs/template_prim_output.pdf";
-    public static final String DEST = "results/stamper/merge.pdf";
+    public static final String DEST = "results/stamper/mergePDF.pdf";
 
     static void mergePdfFiles1(List<InputStream> inputPdfList, OutputStream outputStream) throws Exception {
 
