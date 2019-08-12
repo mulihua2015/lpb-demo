@@ -17,6 +17,7 @@ public class Word2PDF {
         String docPath = "C:\\Users\\ad\\Desktop\\temp\\666.docx";
         String pdfPath = "C:\\Users\\ad\\Desktop\\temp\\777.pdf";
 
+
         XWPFDocument document;
         InputStream doc = new FileInputStream(docPath);
         document = new XWPFDocument(doc);
