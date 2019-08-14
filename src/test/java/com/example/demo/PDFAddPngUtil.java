@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.lpb.PublicAreaPlanFooter;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
@@ -50,9 +51,11 @@ public class PDFAddPngUtil {
     @Test
     public void testCreate_SurveyProjectLocationPDF() throws Exception {
 
+/*
         // 转换图片格式
         String imgPath = "resources/images/AP01.wmf";
         WmfToPng.convert(imgPath);
+*/
 
         // 多条数据
         List<byte[]> list = new ArrayList<>();
@@ -81,10 +84,6 @@ public class PDFAddPngUtil {
     @Test
     public void testCreate_HouseNumberPlanPDF() throws Exception {
 
-        // 转换图片格式
-        String imgPath = "resources/images/AP01.wmf";
-        WmfToPng.convert(imgPath);
-
         // 多条数据
         List<byte[]> list = new ArrayList<>();
         List<Map<String, String>> data=GenData.genHouseNumberPlanData();
@@ -96,43 +95,44 @@ public class PDFAddPngUtil {
             byte[] resultBytes = writeImageToPDF(bytes, images, "img");
             list.add(resultBytes);
         }
-        // 检查文件
-        File file = new File(houseNumberPlanDest);
-        if(file.exists()){
-            file.delete();
-        }
         OutputStream outputStream = new FileOutputStream(houseNumberPlanDest);
         mergePdfFiles2(list, outputStream);
         // write with image
 //        createFile(resultBytes); // 单条
     }
+
     /**
-     * 手动生成 公用建筑面积分层平面图
+     * 手动生成 公用建筑面积分层平面图 带页脚
      * 模板输出带图片的Pdf
      */
     @Test
     public void testCreate_PublicAreaPlanPDF() throws Exception {
 
-        // 转换图片格式
-        String imgPath = "resources/images/AP01.wmf";
-        WmfToPng.convert(imgPath);
-
         // 多条数据
         List<byte[]> list = new ArrayList<>();
-        List<Map<String, String>> data=GenData.genPublicAreaPlanData();
+
+        // begin
+        List<Map<String, String>> data = GenData.genHouseNumberPlanData();
         for(Map<String, String> map: data){
+            // 模板路径
+            String templatePath = "resources/template/house_number_plan_template.pdf";
+            byte[] bytes = generatePdfStream(templatePath, fontName, map);
+            byte[] images = createImage(houseNumberPath);
+            byte[] resultBytes = writeImageToPDF(bytes, images, "img");
+            list.add(resultBytes);
+        }
+        // end
+
+        List<Map<String, String>> data2 = GenData.genPublicAreaPlanData();
+        for (Map<String, String> map : data2) {
             // 模板路径
             String templatePath = "resources/template/public_area_plan_template.pdf";
             byte[] bytes = generatePdfStream(templatePath, fontName, map);
             byte[] images = createImage(IMG);
-            byte[] resultBytes = writeImageToPDF(bytes, images, "IMG");
+            byte[] resultBytes = writeImageToPDF(bytes, images, "img");
             list.add(resultBytes);
         }
-        // 检查文件
-        File file = new File(publicAreaPlanDest);
-        if(file.exists()){
-            file.delete();
-        }
+
         OutputStream outputStream = new FileOutputStream(publicAreaPlanDest);
         mergePdfFiles2(list, outputStream);
         // write with image
@@ -234,6 +234,8 @@ public class PDFAddPngUtil {
 
         // Create writer for the outputStream
         PdfWriter writer = PdfWriter.getInstance(document, outputStream);
+        PdfPageEventHelper pdfPageEventHelper = new PublicAreaPlanFooter();
+        writer.setPageEvent(pdfPageEventHelper);// 页脚
 
         //Open document.
         document.open();
@@ -400,6 +402,11 @@ public class PDFAddPngUtil {
             String value = data.get(key);
             fields.setField(key, value); // 为字段赋值,注意字段名称是区分大小写
         }
+    }
+
+    @Test
+    public void testFooter() {
+        PdfPageEventHelper pdfPageEventHelper = new PublicAreaPlanFooter();
     }
 
 }

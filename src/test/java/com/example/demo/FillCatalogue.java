@@ -38,5 +38,16 @@ public class FillCatalogue {
     }
 
 
+    @Test
+    public void testGetPath() {
+        String projectName = "lpb-demo";
+        String allPath = System.getProperty("user.dir");
+        String projectPath = allPath;
+        String last = allPath.substring(allPath.lastIndexOf("\\"), allPath.length());
+        if (!last.contains(projectName)) {
+            projectPath = allPath.substring(0, allPath.lastIndexOf("\\"));
+        }
+        System.out.println(projectPath);
+    }
 
 }
